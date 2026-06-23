@@ -1,0 +1,16 @@
+# 相依套件
+node_modules/
+
+# SQLite 資料庫檔（每次 seed 會重建，不需上傳）
+*.db
+*.db-shm
+*.db-wal
+
+# 建置輸出
+dist/
+
+# 系統與編輯器
+.DS_Store
+.vscode/
+*.log
+.env
