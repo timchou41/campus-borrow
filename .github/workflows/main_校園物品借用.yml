@@ -12,25 +12,36 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '24.x'
 
-      - name: npm install, build, and test
+      # 1. 處理 client (前端)
+      - name: Build Client
+        working-directory: ./client
+        run: |
+          npm install
+          npm run build
+          
+      # 2. 處理 server (後端)
+      - name: Build Server
         working-directory: ./server
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          # 如果 server 需要 build 指令，請保留下面這行；若不需要則刪除
+          npm run build --if-present 
 
-      - name: Upload artifact for deployment job
+      # 3. 把 client build 好的檔案移進 server 目錄，讓 Azure 一次打包
+      - name: Prepare Deployment Files
+        run: |
+          mkdir -p ./server/public
+          cp -r ./client/build/* ./server/public/
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
