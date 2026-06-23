@@ -60,7 +60,8 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: '校園物品借用'
+          app-name: 'xn---cxe5csagfza8hcaz-yr31a275d3skgk4gpj3bbhn'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: 'Production'
           package: .
           
